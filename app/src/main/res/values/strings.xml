@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AnsungBarnMon</string>
+    <string name="spash_temp">스플래시 화면</string>
+
+    <string name="phone_number_denied">권한 거부로 일부 기능이 제한 됩니다.</string>
+    <string name="des_btn_region">지역 선택</string>
+
+</resources>
