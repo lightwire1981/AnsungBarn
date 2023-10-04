@@ -1,19 +1,13 @@
 package kr.co.senko.ansungbarnmon;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
-import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.rd.PageIndicatorView;
 
-import kr.co.senko.ansungbarnmon.util.Util;
+import kr.co.senko.ansungbarnmon.adapter.WeekInfoAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,8 +16,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PageIndicatorView pageIndicatorView = findViewById(R.id.vpWeeklyInfo);
-        pageIndicatorView.setCount(5);
+        PageIndicatorView pageIndicatorView = findViewById(R.id.pagerIndicator);
+
+        ViewPager2 viewPager2 = findViewById(R.id.vpWeeklyInfo);
+        WeekInfoAdapter weekInfoAdapter = new WeekInfoAdapter();
+        viewPager2.setAdapter(weekInfoAdapter);
 
     }
 

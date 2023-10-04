@@ -3,6 +3,13 @@
     <string name="spash_temp">스플래시 화면</string>
 
     <string name="phone_number_denied">권한 거부로 일부 기능이 제한 됩니다.</string>
+
+    <string name="sample_week_day">XX월 XX일</string>
+    <string name="sample_week_name">X요일</string>
+    <string name="desc_week_status">평가 이미지</string>
+    <string name="sample_week_value">보통</string>
+
     <string name="des_btn_region">지역 선택</string>
 
+    <string name="pager_id">vpWeeklyInfo</string>
 </resources>
