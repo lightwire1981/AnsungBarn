@@ -22,15 +22,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ViewPager2 viewPager2 = findViewById(R.id.vpWeeklyInfo);
+        ViewPager2 vpWeeklyInfo = findViewById(R.id.vpWeeklyInfo);
         WeekInfoAdapter weekInfoAdapter = new WeekInfoAdapter();
-        viewPager2.setAdapter(weekInfoAdapter);
+        vpWeeklyInfo.setAdapter(weekInfoAdapter);
 
-        CircleIndicator3 circleIndicator = findViewById(R.id.pagerIndicator);
-        circleIndicator.setViewPager(viewPager2);
+        CircleIndicator3 vpWeekInfoIndicator = findViewById(R.id.pagerIndicator);
+        vpWeekInfoIndicator.setViewPager(vpWeeklyInfo);
 
-        ImageButton imageButton = findViewById(R.id.ibtnRegion);
-        imageButton.setOnClickListener(view -> {
+        ImageButton drawerMenuBtn = findViewById(R.id.ibtnDrawerMenu);
+        drawerMenuBtn.setOnClickListener(view -> {
             Log.d("<<<<<< button Clicked", "button clicked");
             DrawerLayout drawerLayout = findViewById(R.id.drawerMain);
             View drawer = findViewById(R.id.drawer);

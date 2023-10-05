@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
-                android:id="@+id/ibtnRegion"
+                android:id="@+id/ibtnDrawerMenu"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:adjustViewBounds="true"
@@ -65,7 +65,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/iVwCurrentStatus"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ibtnRegion"
+                app:layout_constraintTop_toBottomOf="@id/ibtnDrawerMenu"
                 app:layout_constraintVertical_bias="0.4">
 
                 <LinearLayout
