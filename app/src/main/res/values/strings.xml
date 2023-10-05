@@ -1,8 +1,15 @@
 <resources>
     <string name="app_name">AnsungBarnMon</string>
-    <string name="spash_temp">스플래시 화면</string>
+    <string name="splash_temp">안성시 축산냄새\n 스마트 ICT 모니터링</string>
+    <string name="desc_splash">스플래시 이미지</string>
 
     <string name="phone_number_denied">권한 거부로 일부 기능이 제한 됩니다.</string>
+
+    <string name="drawer_menu_title">안성시 축산냄새 스마트 ICT 모니터링</string>
+
+    <string name="sample_current_value">좋음</string>
+    <string name="sample_current_region">죽림리</string>
+    <string name="sample_current_timestamp">11.01(수) 오전 10:00</string>
 
     <string name="sample_week_day">XX월 XX일</string>
     <string name="sample_week_name">X요일</string>

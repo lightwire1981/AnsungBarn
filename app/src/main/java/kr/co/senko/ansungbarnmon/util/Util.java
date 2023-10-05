@@ -17,6 +17,7 @@ import android.view.View;
 import androidx.core.app.ActivityCompat;
 
 import kr.co.senko.ansungbarnmon.MainActivity;
+import kr.co.senko.ansungbarnmon.R;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class Util {
@@ -63,6 +64,7 @@ public class Util {
         Intent i = new Intent(context, MainActivity.class);
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             context.startActivity(i);
+            activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             activity.finish();
         }, 2000);
     }

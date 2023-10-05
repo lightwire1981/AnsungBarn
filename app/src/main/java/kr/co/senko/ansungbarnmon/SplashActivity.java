@@ -1,15 +1,12 @@
 package kr.co.senko.ansungbarnmon;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import kr.co.senko.ansungbarnmon.util.Util;
 
@@ -47,7 +44,5 @@ public class SplashActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), getString(R.string.phone_number_denied), Toast.LENGTH_SHORT).show();
             Util.toMainActivity(this, this);
         }
-
-
     }
 }
