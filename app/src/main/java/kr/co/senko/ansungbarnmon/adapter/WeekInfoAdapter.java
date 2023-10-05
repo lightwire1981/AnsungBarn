@@ -7,11 +7,17 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import kr.co.senko.ansungbarnmon.R;
 
-public class WeekInfoAdapter extends RecyclerView.Adapter<WeekInfoHolder> {
+public class WeekInfoAdapter extends RecyclerView.Adapter<WeekInfoAdapter.WeekInfoHolder> {
+
+    private ArrayList<JSONArray> weeklyDataSet = new ArrayList<>();
 
     @NonNull
     @Override
@@ -23,11 +29,24 @@ public class WeekInfoAdapter extends RecyclerView.Adapter<WeekInfoHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull WeekInfoHolder holder, int position) {
-
+//        position
+        holder.recyclerView.setAdapter(null);
     }
 
     @Override
     public int getItemCount() {
         return 10;
+    }
+
+    static class WeekInfoHolder extends RecyclerView.ViewHolder {
+        RecyclerView recyclerView;
+        public WeekInfoHolder(@NonNull View itemView) {
+            super(itemView);
+            recyclerView = itemView.findViewById(R.id.rcyVwWeekly);
+        }
+    }
+
+    private void getData() {
+        weeklyDataSet.add(null);
     }
 }

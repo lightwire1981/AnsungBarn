@@ -1,13 +1,14 @@
 package kr.co.senko.ansungbarnmon;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.rd.PageIndicatorView;
-
 import kr.co.senko.ansungbarnmon.adapter.WeekInfoAdapter;
+import kr.co.senko.ansungbarnmon.util.Util;
+import me.relex.circleindicator.CircleIndicator3;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,17 +17,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PageIndicatorView pageIndicatorView = findViewById(R.id.pagerIndicator);
-
         ViewPager2 viewPager2 = findViewById(R.id.vpWeeklyInfo);
         WeekInfoAdapter weekInfoAdapter = new WeekInfoAdapter();
         viewPager2.setAdapter(weekInfoAdapter);
 
+        CircleIndicator3 circleIndicator = findViewById(R.id.pagerIndicator);
+        circleIndicator.setViewPager(viewPager2);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        Util.setFullScreen(this);
+        Util.setFullScreen(this);
     }
 }
