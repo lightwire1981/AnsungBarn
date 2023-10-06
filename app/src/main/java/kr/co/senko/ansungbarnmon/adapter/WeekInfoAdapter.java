@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
@@ -30,7 +31,12 @@ public class WeekInfoAdapter extends RecyclerView.Adapter<WeekInfoAdapter.WeekIn
     @Override
     public void onBindViewHolder(@NonNull WeekInfoHolder holder, int position) {
 //        position
-        holder.recyclerView.setAdapter(null);
+        ArrayList<String> tempData = new ArrayList<>();
+        for(int i=0; i<7; i++) {
+            tempData.add(i+"");
+        }
+        DailyInfoAdapter dailyInfoAdapter = new DailyInfoAdapter(tempData);
+        holder.recyclerView.setAdapter(dailyInfoAdapter);
     }
 
     @Override
@@ -43,6 +49,9 @@ public class WeekInfoAdapter extends RecyclerView.Adapter<WeekInfoAdapter.WeekIn
         public WeekInfoHolder(@NonNull View itemView) {
             super(itemView);
             recyclerView = itemView.findViewById(R.id.rcyVwWeekly);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext());
+            linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+            recyclerView.setLayoutManager(linearLayoutManager);
         }
     }
 

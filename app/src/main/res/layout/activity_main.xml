@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            app:layout_constraintBottom_toTopOf="@id/rcyVwCurrentData"
+            app:layout_constraintBottom_toTopOf="@id/rcVwTodayData"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -33,8 +33,8 @@
                 android:contentDescription="@string/app_name"
                 android:cropToPadding="true"
                 android:scaleType="centerInside"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
+                android:scaleX="0.4"
+                android:scaleY="0.4"
                 android:src="@drawable/menu_btn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -48,12 +48,13 @@
                 android:layout_width="170dp"
                 android:layout_height="170dp"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/desc_daily_status"
                 android:cropToPadding="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/lLyCurrentStatusInfo"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/emoticon1" />
+                app:srcCompat="@drawable/emo_good" />
 
             <LinearLayout
                 android:id="@+id/lLyCurrentStatusInfo"
@@ -120,13 +121,22 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/div_line_bg"
+            app:layout_constraintBottom_toTopOf="@+id/rcVwTodayData"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clyCurrentStatus" />
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcyVwCurrentData"
+            android:id="@+id/rcVwTodayData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="horizontal"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
             app:layout_constraintBottom_toTopOf="@+id/vpWeeklyInfo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -134,17 +144,27 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/div_line_bg"
+            app:layout_constraintBottom_toTopOf="@+id/vpWeeklyInfo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rcVwTodayData" />
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vpWeeklyInfo"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:background="#D65555"
             app:layout_constraintBottom_toTopOf="@+id/pagerIndicator"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rcyVwCurrentData" />
+            app:layout_constraintTop_toBottomOf="@id/rcVwTodayData" />
+
 
         <me.relex.circleindicator.CircleIndicator3
             android:id="@+id/pagerIndicator"
@@ -158,8 +178,7 @@
             app:ci_width="5dp"
             app:layout_constraintBottom_toTopOf="@id/llyFooter"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vpWeeklyInfo" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
             android:id="@+id/llyFooter"
@@ -169,6 +188,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -191,7 +211,10 @@
         android:layout_gravity="start"
         android:background="#7FBFFF"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingStart="10dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="20dp">
 
         <ImageView
             android:id="@+id/imageView5"
@@ -217,6 +240,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/current_region_bg"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:weightSum="100">
@@ -255,7 +281,7 @@
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/emoticon1" />
+                app:srcCompat="@drawable/emo_good" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -269,13 +295,14 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageView8"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="20dp"
-            app:srcCompat="@android:drawable/progress_horizontal" />
+            android:background="@drawable/current_region_bg" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"

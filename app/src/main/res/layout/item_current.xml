@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="70dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tVwDailyTimeLog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/sample_current_time"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/iVwDailyStatusLog"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:contentDescription="@string/desc_daily_status"
+        app:srcCompat="@drawable/emo_good" />
+
+    <TextView
+        android:id="@+id/tVwDailyValueLog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/sample_current_value"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
+</LinearLayout>

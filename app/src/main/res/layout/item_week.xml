@@ -3,40 +3,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:weightSum="100">
 
     <TextView
         android:id="@+id/tVwWeekDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="10"
         android:gravity="center"
-        android:text="@string/sample_week_day" />
+        android:text="@string/sample_week_day"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tVwWeekName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="10"
         android:gravity="center"
-        android:text="@string/sample_week_name" />
+        android:text="@string/sample_week_name"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="40" />
 
     <ImageView
         android:id="@+id/iVwWeekStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginStart="30dp"
-        android:layout_weight="1"
+        android:layout_weight="10"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/desc_week_status"
-        tools:srcCompat="@android:drawable/btn_star_big_on" />
+        android:cropToPadding="true"
+        android:scaleType="centerInside"
+        tools:srcCompat="@drawable/emo_good" />
 
     <TextView
         android:id="@+id/tVwWeekValue"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_gravity="center"
         android:gravity="center"
-        android:text="@string/sample_week_value" />
+        android:text="@string/sample_week_value"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
 </LinearLayout>
