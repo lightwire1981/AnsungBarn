@@ -7,6 +7,7 @@
 
     <string name="drawer_menu_title">안성시 축산냄새 스마트 ICT 모니터링</string>
 
+
     <string name="sample_current_time">오전 10시</string>
     <string name="sample_current_value">좋음</string>
     <string name="sample_current_region">죽림리</string>
@@ -39,4 +40,8 @@
 
     <string name="pager_id">vpWeeklyInfo</string>
 
+    <string name="footer_corp">©안성시</string>
+    <string name="footer_terms">이용약관</string>
+    <string name="footer_privacy_policy">개인정보처리방침</string>
+    <string name="footer_login">농장주 로그인</string>
 </resources>

@@ -21,6 +21,8 @@ import kr.co.senko.ansungbarnmon.R;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class Util {
+
+    public static String PHONE_NUMBER;
     public static void setFullScreen(Activity base) {
 
         View decorView = base.getWindow().getDecorView();
@@ -49,14 +51,13 @@ public class Util {
     }
     @SuppressLint("HardwareIds")
     public static void getPhoneNumber(Context context, Activity activity) {
-        String phoneNumber;
         Log.i("<<<<Check Permission>>", "퍼미션 존재함");
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        phoneNumber = telephonyManager.getLine1Number() == null ? "":telephonyManager.getLine1Number();
-        Log.i("<<<<< Phone Number >>>>>", phoneNumber);
+        PHONE_NUMBER = telephonyManager.getLine1Number() == null ? "":telephonyManager.getLine1Number();
+        Log.i("<<<<< Phone Number >>>>>", PHONE_NUMBER);
         toMainActivity(context, activity);
     }
 

@@ -7,11 +7,11 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\Dev-Chorok\.android\avd\Galaxy_Z_Flip5_API_33.avd" />
+            <value value="C:\Users\light\.android\avd\Galaxy_S8.avd" />
           </Key>
         </deviceKey>
       </Target>
     </runningDeviceTargetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2023-10-06T07:07:02.937584700Z" />
+    <timeTargetWasSelectedWithDropDown value="2023-10-07T18:48:24.833434900Z" />
   </component>
 </project>
