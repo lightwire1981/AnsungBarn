@@ -14,7 +14,7 @@
         android:gravity="center"
         android:text="@string/sample_current_time"
         android:textColor="#FFFFFF"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 
     <ImageView
         android:id="@+id/iVwDailyStatusLog"

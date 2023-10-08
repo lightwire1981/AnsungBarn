@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkLoginActivate() {
         if (Util.PHONE_NUMBER.isEmpty()) return;
 
-        boolean isActivate = true;
+        boolean isActivate = false;
         // 농장주 번호 확인 구문
 
         if (isActivate) {

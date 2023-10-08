@@ -10,7 +10,6 @@
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/LayoutMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -31,23 +30,27 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintVertical_bias="0.03" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/LayoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="60">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clyCurrentStatus"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_weight="18">
 
             <ImageView
                 android:id="@+id/iVwCurrentStatus"
-                android:layout_width="170dp"
-                android:layout_height="170dp"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/desc_daily_status"
                 android:cropToPadding="true"
@@ -55,6 +58,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/lLyCurrentStatusInfo"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.25"
                 app:srcCompat="@drawable/emo_good" />
 
             <LinearLayout
@@ -112,7 +116,7 @@
                 android:layout_marginTop="13dp"
                 android:text="@string/sample_current_value"
                 android:textColor="#FFFFFF"
-                android:textSize="60sp"
+                android:textSize="70sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -123,78 +127,77 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
-            android:id="@+id/view"
+            android:id="@+id/vwUiup"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="20dp"
-            android:background="@drawable/div_line_bg"
-            app:layout_constraintBottom_toTopOf="@+id/rcVwTodayData"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/clyCurrentStatus" />
+            android:background="@drawable/div_line_bg" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcVwTodayData"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
-            app:layout_constraintBottom_toTopOf="@+id/vpWeeklyInfo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/clyCurrentStatus">
+            android:layout_weight="25"
+            android:requiresFadingEdge="horizontal">
 
         </androidx.recyclerview.widget.RecyclerView>
 
         <View
+            android:id="@+id/vwUIdown"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="20dp"
-            android:background="@drawable/div_line_bg"
-            app:layout_constraintBottom_toTopOf="@+id/vpWeeklyInfo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rcVwTodayData" />
+            android:background="@drawable/div_line_bg" />
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vpWeeklyInfo"
+        <LinearLayout
+            android:id="@+id/lLyWeek"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/pagerIndicator"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rcVwTodayData" />
+            android:layout_height="match_parent"
+            android:layout_weight="17"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="10">
 
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vpWeeklyInfo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:minHeight="280dp">
 
-        <me.relex.circleindicator.CircleIndicator3
-            android:id="@+id/pagerIndicator"
+            </androidx.viewpager2.widget.ViewPager2>
 
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            app:ci_drawable="@drawable/pgd_act"
-            app:ci_drawable_unselected="@drawable/pgd_deact"
-            app:ci_height="5dp"
-            app:ci_orientation="horizontal"
-            app:ci_width="5dp"
-            app:layout_constraintBottom_toTopOf="@id/llyFooter"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <me.relex.circleindicator.CircleIndicator3
+                android:id="@+id/pagerIndicator"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="9"
+                android:minHeight="20dp"
+                app:ci_drawable="@drawable/pgd_act"
+                app:ci_drawable_unselected="@drawable/pgd_deact"
+                app:ci_height="5dp"
+                app:ci_orientation="horizontal"
+                app:ci_width="5dp" />
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/llyFooter"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_gravity="bottom"
             android:background="#5985B2"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:weightSum="10"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vpWeeklyInfo"
-            app:layout_constraintVertical_bias="1.0">
+            android:weightSum="10">
 
             <TextView
                 android:id="@+id/tVwFooterCity"
@@ -244,7 +247,7 @@
                 android:visibility="gone" />
 
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/drawer"
