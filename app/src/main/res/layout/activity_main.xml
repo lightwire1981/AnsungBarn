@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:layout_weight="18">
+            android:layout_weight="18.5">
 
             <ImageView
                 android:id="@+id/iVwCurrentStatus"
@@ -130,7 +130,10 @@
             android:id="@+id/vwUiup"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_margin="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/div_line_bg" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -140,7 +143,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
-            android:layout_weight="25"
+            android:layout_weight="25.5"
             android:requiresFadingEdge="horizontal">
 
         </androidx.recyclerview.widget.RecyclerView>
@@ -149,14 +152,17 @@
             android:id="@+id/vwUIdown"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_margin="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/div_line_bg" />
 
         <LinearLayout
             android:id="@+id/lLyWeek"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="17"
+            android:layout_weight="16"
             android:gravity="center"
             android:orientation="vertical"
             android:weightSum="10">
@@ -165,6 +171,7 @@
                 android:id="@+id/vpWeeklyInfo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_weight="1"
