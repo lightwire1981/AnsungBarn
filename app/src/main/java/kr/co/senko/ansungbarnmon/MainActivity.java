@@ -1,7 +1,6 @@
 package kr.co.senko.ansungbarnmon;
 
 import android.annotation.SuppressLint;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -25,6 +24,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import kr.co.senko.ansungbarnmon.adapter.RegionInfoAdapter;
 import kr.co.senko.ansungbarnmon.adapter.TodayInfoAdapter;
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton drawerMenuBtn = findViewById(R.id.ibtnDrawerMenu);
         drawerMenuBtn.setOnClickListener(view -> {
-            Log.d("<<<<<< button Clicked", "button clicked");
             DrawerLayout drawerLayout = findViewById(R.id.drawerMain);
             View drawer = findViewById(R.id.drawer);
             drawerLayout.openDrawer(drawer);
@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         checkLoginActivate();
         getRegionData();
     }
+
+
 
     private void SetWidget() {
         rcyVwCurrent = findViewById(R.id.rcVwCurrentData);
@@ -87,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
      * 현재 까지 오늘자 정보 표시
      */
     private void getCurrentData() {
-        Log.d("???????????? Group ID : ", GROUP_ID);
         DBRequest.OnCompleteListener onCompleteListener = result -> {
             try {
                 JSONObject rowData = new JSONObject(result);
@@ -143,32 +144,42 @@ public class MainActivity extends AppCompatActivity {
      * 농장주 로그인 활성화
      */
     private void checkLoginActivate() {
-        if (Util.PHONE_NUMBER.isEmpty()) return;
-
         boolean isActivate = false;
-        // 농장주 번호 확인 구문
+//        if (Util.PHONE_NUMBER.isEmpty()) return;
 
-        if (isActivate) {
-            TextView tvwLogin = findViewById(R.id.tVwFooterLogin);
-            tvwLogin.setVisibility(View.VISIBLE);
-        } else {
-            TextView tvwCity = findViewById(R.id.tVwFooterCity);
-            Space spBlank = findViewById(R.id.spFooterBlank);
-            TextView tvwTerms = findViewById(R.id.tVwFooterTerms);
-            TextView tvwPrivacy = findViewById(R.id.tVwFooterPrivacy);
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)tvwCity.getLayoutParams();
-            params.weight = 2;
-            tvwCity.setLayoutParams(params);
-            params = (LinearLayout.LayoutParams)tvwTerms.getLayoutParams();
-            params.weight = 2;
-            tvwTerms.setLayoutParams(params);
-            params = (LinearLayout.LayoutParams)tvwPrivacy.getLayoutParams();
-            params.weight = 2;
-            tvwPrivacy.setLayoutParams(params);
-            params = (LinearLayout.LayoutParams)spBlank.getLayoutParams();
-            params.weight = 4;
-            spBlank.setLayoutParams(params);
-        }
+        DBRequest.OnCompleteListener onCompleteListener = result -> {
+            try {
+                JSONObject response = new JSONObject(result);
+                if (response.getString("msg").equals("Y")) {
+                    String userID = new JSONObject(response.getString("result")).getString("dt_op_user_id");
+                    Log.i("############# User ID : ", userID);
+                    TextView tvwLogin = findViewById(R.id.tVwFooterLogin);
+                    tvwLogin.setVisibility(View.VISIBLE);
+                } else {
+                    TextView tvwCity = findViewById(R.id.tVwFooterCity);
+                    Space spBlank = findViewById(R.id.spFooterBlank);
+                    TextView tvwTerms = findViewById(R.id.tVwFooterTerms);
+                    TextView tvwPrivacy = findViewById(R.id.tVwFooterPrivacy);
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)tvwCity.getLayoutParams();
+                    params.weight = 2;
+                    tvwCity.setLayoutParams(params);
+                    params = (LinearLayout.LayoutParams)tvwTerms.getLayoutParams();
+                    params.weight = 2;
+                    tvwTerms.setLayoutParams(params);
+                    params = (LinearLayout.LayoutParams)tvwPrivacy.getLayoutParams();
+                    params.weight = 2;
+                    tvwPrivacy.setLayoutParams(params);
+                    params = (LinearLayout.LayoutParams)spBlank.getLayoutParams();
+                    params.weight = 4;
+                    spBlank.setLayoutParams(params);
+                }
+
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+        };
+        new DBRequest(getBaseContext(), new Handler(Looper.getMainLooper())).executeAsync(DBRequest.REQUEST_TYPE.LOGIN_AUTH, Util.PHONE_NUMBER, onCompleteListener);
     }
 
     /**
@@ -192,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                     Objects.requireNonNull(rcyVwCurrent.getAdapter()).notifyDataSetChanged();
                     getWeeklyData();
                     Objects.requireNonNull(vpWeeklyInfo.getAdapter()).notifyDataSetChanged();
-                    ((DrawerLayout)findViewById(R.id.drawerMain)).close();
+                    new Handler().postDelayed(() -> ((DrawerLayout)findViewById(R.id.drawerMain)).close(), 500);
                 };
 
                 RegionInfoAdapter regionInfoAdapter = new RegionInfoAdapter(regionInfoList, regionSelectListener);
@@ -206,9 +217,27 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    private final Timer upDateTimer = new Timer();
+
     @Override
     protected void onResume() {
         super.onResume();
         Util.setFullScreen(this);
+        TimerTask upDateTask = new TimerTask() {
+            @Override
+            public void run() {
+                Log.i("<<<<<<<<< Data Updated", "");
+                getCurrentData();
+                getWeeklyData();
+            }
+        };
+        upDateTimer.schedule(upDateTask, 0, 10000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        upDateTimer.cancel();
     }
 }

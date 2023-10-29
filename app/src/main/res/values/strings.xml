@@ -9,6 +9,7 @@
 
     <string name="current_list_url">https://livestock.kr/be/appRealList.do</string>
     <string name="week_list_url">https://livestock.kr/be/appWeekList.do</string>
+    <string name="login_auth">https://livestock.kr/be/appAuthUser.do?user_phone=</string>
     <string name="group_query">\?sys_op_group_id=</string>
 
 

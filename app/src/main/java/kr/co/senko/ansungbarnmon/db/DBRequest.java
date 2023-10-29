@@ -20,7 +20,8 @@ public class DBRequest {
 
     public static enum REQUEST_TYPE {
         CURRENT,
-        WEEK
+        WEEK,
+        LOGIN_AUTH
     }
 
     private Context context;
@@ -51,12 +52,12 @@ public class DBRequest {
 
     class RequestData implements Callable<String> {
         REQUEST_TYPE type;
-        String groupID;
+        String param;
         final String TAG = "DBRequest";
 
-        public RequestData(REQUEST_TYPE type, String groupID) {
+        public RequestData(REQUEST_TYPE type, String param) {
             this.type = type;
-            this.groupID = groupID;
+            this.param = param;
         }
 
         @Override
@@ -65,17 +66,21 @@ public class DBRequest {
             String URL;
             String currentUrl = context.getString(R.string.current_list_url);
             String weekUrl = context.getString(R.string.week_list_url);
+            String loginUrl = context.getString(R.string.login_auth);
             String addID = context.getString(R.string.group_query);
 
             switch (type) {
                 case CURRENT:
-                    URL = currentUrl+(groupID.isEmpty() ? "":addID+groupID);
+                    URL = currentUrl+(param.isEmpty() ? "":addID+ param);
                     break;
                 case WEEK:
-                    URL = weekUrl+(groupID.isEmpty() ? "":addID+groupID);
+                    URL = weekUrl+(param.isEmpty() ? "":addID+ param);
+                    break;
+                case LOGIN_AUTH:
+                    URL = loginUrl+param;
                     break;
                 default:
-                    Log.e("<<<<<<<<<< URL Error by ID : ", groupID);
+                    Log.e("<<<<<<<<<< URL Error by ID : ", param);
                     return "";
             }
             Log.i("<<<<<<<<<<< URL : ", URL);
