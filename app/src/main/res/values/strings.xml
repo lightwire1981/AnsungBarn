@@ -7,6 +7,10 @@
 
     <string name="drawer_menu_title">안성시 축산냄새 스마트 ICT 모니터링</string>
 
+    <string name="current_list_url">https://livestock.kr/be/appRealList.do</string>
+    <string name="week_list_url">https://livestock.kr/be/appWeekList.do</string>
+    <string name="group_query">\?sys_op_group_id=</string>
+
 
     <string name="sample_current_time">오전 10시</string>
     <string name="sample_current_value">좋음</string>

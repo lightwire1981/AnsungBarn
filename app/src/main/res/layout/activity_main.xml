@@ -48,7 +48,7 @@
             android:layout_weight="18.5">
 
             <ImageView
-                android:id="@+id/iVwCurrentStatus"
+                android:id="@+id/iVwCurrentRegionStatus"
                 android:layout_width="160dp"
                 android:layout_height="160dp"
                 android:adjustViewBounds="true"
@@ -70,7 +70,7 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/iVwCurrentStatus"
+                app:layout_constraintEnd_toStartOf="@+id/iVwCurrentRegionStatus"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -88,7 +88,7 @@
                         app:srcCompat="@drawable/spot_ico" />
 
                     <TextView
-                        android:id="@+id/textView2"
+                        android:id="@+id/tVwCurrentRegionName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -100,7 +100,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/tVwCurrentRegionTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/sample_current_timestamp"
@@ -110,7 +110,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tVwCurrentStatusValue"
+                android:id="@+id/tVwCurrentRegionValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
@@ -137,7 +137,7 @@
             android:background="@drawable/div_line_bg" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcVwTodayData"
+            android:id="@+id/rcVwCurrentData"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
@@ -312,7 +312,7 @@
                 app:srcCompat="@drawable/spot_ico" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/tVwDrawerRegionName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="10"
@@ -328,7 +328,7 @@
                 android:layout_weight="50" />
 
             <ImageView
-                android:id="@+id/imageView7"
+                android:id="@+id/IVwDrawerRegionStatus"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_weight="10"
@@ -338,7 +338,7 @@
                 app:srcCompat="@drawable/emo_good" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/tVwDrawerRegionValue"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="10"

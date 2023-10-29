@@ -16,6 +16,12 @@ import android.view.View;
 
 import androidx.core.app.ActivityCompat;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import kr.co.senko.ansungbarnmon.MainActivity;
 import kr.co.senko.ansungbarnmon.R;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -68,5 +74,70 @@ public class Util {
             activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             activity.finish();
         }, 2000);
+    }
+
+    public static int convertToImage(String value) {
+        int resourceID;
+        switch (value) {
+            case "0":
+                resourceID = R.drawable.emo_good;
+                break;
+            case "1":
+                resourceID = R.drawable.emo_normal;
+                break;
+            case "2":
+                resourceID = R.drawable.emo_bad;
+                break;
+            case "3":
+                resourceID = R.drawable.emo_worst;
+                break;
+            default:
+                resourceID = 0;
+                break;
+        }
+        return resourceID;
+    }
+
+    public static String convertToStatus(Context context, String value) {
+        return context.getResources().getStringArray(R.array.status_value)[Integer.parseInt(value)];
+    }
+
+    public static String convertToDate(String timestamp) {
+        try {
+            @SuppressLint("SimpleDateFormat") Date origin = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(timestamp);
+            SimpleDateFormat myFormat = new SimpleDateFormat("M월 d일(E) a h:mm", Locale.KOREAN);
+            assert origin != null;
+            return myFormat.format(origin);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String convertBeforeHours(String timestamp, int interval) throws ParseException {
+
+        @SuppressLint("SimpleDateFormat") Date origin = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(timestamp);
+        Calendar calendar = Calendar.getInstance();
+
+        assert origin != null;
+        calendar.setTime(origin);
+        calendar.add(Calendar.HOUR, -interval);
+
+        SimpleDateFormat myFormat = new SimpleDateFormat("a h시", Locale.KOREAN);
+        return myFormat.format(calendar.getTime());
+    }
+
+    public static String[] convertBeforeDays(int interval) {
+        Date now = new Date();
+
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(now);
+        calendar.add(Calendar.DATE, -interval);
+
+        SimpleDateFormat myFormat = new SimpleDateFormat("M월 d일", Locale.KOREAN);
+        String day = myFormat.format(calendar.getTime());
+        myFormat = new SimpleDateFormat("EEEE", Locale.KOREAN);
+        String week = myFormat.format(calendar.getTime());
+        return new String[]{day, week};
     }
 }

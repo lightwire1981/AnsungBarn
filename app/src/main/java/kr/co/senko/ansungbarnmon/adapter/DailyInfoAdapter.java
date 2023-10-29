@@ -14,14 +14,18 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import kr.co.senko.ansungbarnmon.R;
+import kr.co.senko.ansungbarnmon.db.WeekInfo;
+import kr.co.senko.ansungbarnmon.util.Util;
 
 public class DailyInfoAdapter extends RecyclerView.Adapter<DailyInfoAdapter.ViewHolder>{
 
     private final ArrayList<String> dailyDataSet;
+    private int dayCount = 0;
     private Context context;
 
-    public DailyInfoAdapter(ArrayList<String> resourceDataSet) {
-        dailyDataSet = resourceDataSet;
+    public DailyInfoAdapter(ArrayList<String> dailyDataSet, int position) {
+        this.dailyDataSet = dailyDataSet;
+        this.dayCount = position;
     }
 
     @NonNull
@@ -34,28 +38,11 @@ public class DailyInfoAdapter extends RecyclerView.Adapter<DailyInfoAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String[] weekName = context.getResources().getStringArray(R.array.week_name);
-        String[] value = context.getResources().getStringArray(R.array.status_value);
-        Random random = new Random();
-        int num = random.nextInt(4);
-        holder.weekName.setText(weekName[position]);
-        switch (num) {
-            case 0:
-                holder.weekStatus.setImageResource(R.drawable.emo_good);
-                break;
-            case 1:
-                holder.weekStatus.setImageResource(R.drawable.emo_normal);
-                break;
-            case 2:
-                holder.weekStatus.setImageResource(R.drawable.emo_bad);
-                break;
-            case 3:
-                holder.weekStatus.setImageResource(R.drawable.emo_worst);
-                break;
-            default:
-                break;
-        }
-        holder.weekValue.setText(value[num]);
+        String[] beforeDate = Util.convertBeforeDays(position+1);
+        holder.weekDay.setText(beforeDate[0]);
+        holder.weekName.setText(beforeDate[1]);
+        holder.weekStatus.setImageResource(Util.convertToImage(dailyDataSet.get(position)));
+        holder.weekValue.setText(Util.convertToStatus(holder.itemView.getContext(), dailyDataSet.get(position)));
     }
 
     @Override

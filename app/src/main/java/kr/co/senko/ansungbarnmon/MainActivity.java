@@ -1,10 +1,14 @@
 package kr.co.senko.ansungbarnmon;
 
 import android.annotation.SuppressLint;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
@@ -15,24 +19,40 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import org.w3c.dom.Text;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Objects;
 
 import kr.co.senko.ansungbarnmon.adapter.RegionInfoAdapter;
 import kr.co.senko.ansungbarnmon.adapter.TodayInfoAdapter;
 import kr.co.senko.ansungbarnmon.adapter.WeekInfoAdapter;
+import kr.co.senko.ansungbarnmon.db.CurrentInfo;
+import kr.co.senko.ansungbarnmon.db.DBRequest;
+import kr.co.senko.ansungbarnmon.db.RegionInfo;
+import kr.co.senko.ansungbarnmon.db.WeekInfo;
+import kr.co.senko.ansungbarnmon.util.PreferenceSetting;
 import kr.co.senko.ansungbarnmon.util.Util;
 import me.relex.circleindicator.CircleIndicator3;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static String GROUP_ID;
+    private RecyclerView rcyVwCurrent;
+    private ViewPager2 vpWeeklyInfo;
+    private RecyclerView rcyVwRegion;
+
+    private CurrentInfo SelectedInfo;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        GROUP_ID = PreferenceSetting.LoadPreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.REGION_INFO);
 
         ImageButton drawerMenuBtn = findViewById(R.id.ibtnDrawerMenu);
         drawerMenuBtn.setOnClickListener(view -> {
@@ -42,43 +62,81 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.openDrawer(drawer);
         });
 
-        getTodayData();
+        SetWidget();
+        getCurrentData();
         getWeeklyData();
         checkLoginActivate();
         getRegionData();
     }
 
+    private void SetWidget() {
+        rcyVwCurrent = findViewById(R.id.rcVwCurrentData);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        rcyVwCurrent.setLayoutManager(linearLayoutManager);
+
+        vpWeeklyInfo = findViewById(R.id.vpWeeklyInfo);
+
+        rcyVwRegion = findViewById(R.id.rcVwRegionList);
+        LinearLayoutManager lmgr = new LinearLayoutManager(this);
+        lmgr.setOrientation(RecyclerView.VERTICAL);
+        rcyVwRegion.setLayoutManager(lmgr);
+    }
+
     /**
      * 현재 까지 오늘자 정보 표시
      */
-    private void getTodayData() {
+    private void getCurrentData() {
+        Log.d("???????????? Group ID : ", GROUP_ID);
+        DBRequest.OnCompleteListener onCompleteListener = result -> {
+            try {
+                JSONObject rowData = new JSONObject(result);
+                JSONArray dataArray = new JSONArray(rowData.getString("list"));
+                JSONObject currentData = dataArray.getJSONObject(0);
+                CurrentInfo currentInfo = new CurrentInfo(currentData);
+                SelectedInfo = currentInfo;
+//                for(String value : currentInfo.getCurrentLog()) {
+//                    Log.i("Log :", value);
+//                }
 
-        ArrayList<String> tempDataSet = new ArrayList<>();
-        for (int i=0; i<24; i++) {
-            Random random = new Random();
-            int num = random.nextInt(4);
-            tempDataSet.add(num+"");
-        }
+                ((TextView)findViewById(R.id.tVwCurrentRegionName)).setText(currentInfo.getGroupName());
+                ((TextView)findViewById(R.id.tVwCurrentRegionTime)).setText(Util.convertToDate(currentInfo.getCurrentTime()));
+                ((TextView)findViewById(R.id.tVwCurrentRegionValue)).setText(Util.convertToStatus(getBaseContext(), currentInfo.getCurrentValue()));
+                ((ImageView)findViewById(R.id.iVwCurrentRegionStatus)).setImageResource(Util.convertToImage(currentInfo.getCurrentValue()));
 
-        RecyclerView recyclerView = findViewById(R.id.rcVwTodayData);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
+                ((TextView)findViewById(R.id.tVwDrawerRegionName)).setText(currentInfo.getGroupName());
+                ((ImageView)findViewById(R.id.IVwDrawerRegionStatus)).setImageResource(Util.convertToImage(currentInfo.getCurrentValue()));
+                ((TextView)findViewById(R.id.tVwDrawerRegionValue)).setText(Util.convertToStatus(getBaseContext(), currentInfo.getCurrentValue()));
 
-        TodayInfoAdapter todayInfoAdapter = new TodayInfoAdapter(tempDataSet);
-        recyclerView.setAdapter(todayInfoAdapter);
+                TodayInfoAdapter todayInfoAdapter = new TodayInfoAdapter(currentInfo);
+                rcyVwCurrent.setAdapter(todayInfoAdapter);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        };
+        new DBRequest(getBaseContext(), new Handler(Looper.getMainLooper())).executeAsync(DBRequest.REQUEST_TYPE.CURRENT, GROUP_ID, onCompleteListener);
     }
 
     /**
      * 오늘 까지 주중 정보 표시
      */
     private void getWeeklyData() {
-        ViewPager2 vpWeeklyInfo = findViewById(R.id.vpWeeklyInfo);
-        WeekInfoAdapter weekInfoAdapter = new WeekInfoAdapter();
-        vpWeeklyInfo.setAdapter(weekInfoAdapter);
+        DBRequest.OnCompleteListener onCompleteListener = result -> {
+            try {
+                JSONObject rowData = new JSONObject(result);
+                JSONArray dataArray = new JSONArray(rowData.getString("list"));
+                WeekInfo weekInfo = new WeekInfo(dataArray);
 
-        CircleIndicator3 vpWeekInfoIndicator = findViewById(R.id.pagerIndicator);
-        vpWeekInfoIndicator.setViewPager(vpWeeklyInfo);
+                WeekInfoAdapter weekInfoAdapter = new WeekInfoAdapter(weekInfo);
+                vpWeeklyInfo.setAdapter(weekInfoAdapter);
+
+                CircleIndicator3 vpWeekInfoIndicator = findViewById(R.id.pagerIndicator);
+                vpWeekInfoIndicator.setViewPager(vpWeeklyInfo);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        };
+        new DBRequest(getBaseContext(), new Handler(Looper.getMainLooper())).executeAsync(DBRequest.REQUEST_TYPE.WEEK, GROUP_ID, onCompleteListener);
     }
 
     /**
@@ -117,29 +175,37 @@ public class MainActivity extends AppCompatActivity {
      * 지역 정보 표시(슬라이드 메뉴)
      */
     private void getRegionData() {
-        ArrayList<String[]> tempDataSet = new ArrayList<>();
-        for (int i=0; i<10; i++) {
-            Random random = new Random();
-            int num = random.nextInt(4);
-            String[] value = {"죽림리", num+""};
-            tempDataSet.add(value);
-        }
-        RecyclerView recyclerView = findViewById(R.id.rcVwRegionList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        DBRequest.OnCompleteListener onCompleteListener = result -> {
+            try {
+                JSONObject rowData = new JSONObject(result);
+                JSONArray dataArray = new JSONArray(rowData.getString("list"));
+                ArrayList<RegionInfo> regionInfoList = new ArrayList<>();
+                for (int index=0; index < dataArray.length(); index++) {
+                    regionInfoList.add(new RegionInfo(dataArray.getJSONObject(index)));
+                }
 
-        RegionInfoAdapter.RegionSelectListener regionSelectListener = regionName -> {
-            Log.d("<<<<< Selected Region Name", regionName);
-            ((DrawerLayout)findViewById(R.id.drawerMain)).close();
+                @SuppressLint("NotifyDataSetChanged") RegionInfoAdapter.RegionSelectListener regionSelectListener = regionGroup -> {
+                    Log.d("<<<<< Selected Region Group", regionGroup);
+                    PreferenceSetting.SavePreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.REGION_INFO, regionGroup);
+                    GROUP_ID = regionGroup;
+                    getCurrentData();
+                    Objects.requireNonNull(rcyVwCurrent.getAdapter()).notifyDataSetChanged();
+                    getWeeklyData();
+                    Objects.requireNonNull(vpWeeklyInfo.getAdapter()).notifyDataSetChanged();
+                    ((DrawerLayout)findViewById(R.id.drawerMain)).close();
+                };
+
+                RegionInfoAdapter regionInfoAdapter = new RegionInfoAdapter(regionInfoList, regionSelectListener);
+                rcyVwRegion.setAdapter(regionInfoAdapter);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
         };
+        new DBRequest(getBaseContext(), new Handler(Looper.getMainLooper())).executeAsync(DBRequest.REQUEST_TYPE.CURRENT, "", onCompleteListener);
 
-        RegionInfoAdapter regionInfoAdapter = new RegionInfoAdapter(tempDataSet, regionSelectListener);
-        recyclerView.setAdapter(regionInfoAdapter);
 
 
     }
-
     @Override
     protected void onResume() {
         super.onResume();

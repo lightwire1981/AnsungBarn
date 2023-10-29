@@ -9,16 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONArray;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import kr.co.senko.ansungbarnmon.R;
+import kr.co.senko.ansungbarnmon.db.WeekInfo;
 
 public class WeekInfoAdapter extends RecyclerView.Adapter<WeekInfoAdapter.WeekInfoHolder> {
 
-    private ArrayList<JSONArray> weeklyDataSet = new ArrayList<>();
+    private final WeekInfo weekDataSet;
+
+
+    public WeekInfoAdapter(WeekInfo weekDataSet) {
+        this.weekDataSet = weekDataSet;
+    }
 
     @NonNull
     @Override
@@ -30,18 +31,14 @@ public class WeekInfoAdapter extends RecyclerView.Adapter<WeekInfoAdapter.WeekIn
 
     @Override
     public void onBindViewHolder(@NonNull WeekInfoHolder holder, int position) {
-//        position
-        ArrayList<String> tempData = new ArrayList<>();
-        for(int i=0; i<7; i++) {
-            tempData.add(i+"");
-        }
-        DailyInfoAdapter dailyInfoAdapter = new DailyInfoAdapter(tempData);
+
+        DailyInfoAdapter dailyInfoAdapter = new DailyInfoAdapter(weekDataSet.getWeekLog().get(position), position);
         holder.recyclerView.setAdapter(dailyInfoAdapter);
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return weekDataSet.getWeekLog().size();
     }
 
     static class WeekInfoHolder extends RecyclerView.ViewHolder {
@@ -53,9 +50,5 @@ public class WeekInfoAdapter extends RecyclerView.Adapter<WeekInfoAdapter.WeekIn
             linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
             recyclerView.setLayoutManager(linearLayoutManager);
         }
-    }
-
-    private void getData() {
-        weeklyDataSet.add(null);
     }
 }

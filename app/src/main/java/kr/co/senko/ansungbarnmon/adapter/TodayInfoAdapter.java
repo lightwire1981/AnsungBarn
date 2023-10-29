@@ -10,17 +10,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.text.ParseException;
 
 import kr.co.senko.ansungbarnmon.R;
+import kr.co.senko.ansungbarnmon.db.CurrentInfo;
+import kr.co.senko.ansungbarnmon.util.Util;
 
 public class TodayInfoAdapter extends RecyclerView.Adapter<TodayInfoAdapter.ViewHolder>{
 
-    private final ArrayList<String> todayDataSet;
+    private final CurrentInfo currentDataSet;
     private Context context;
 
-    public TodayInfoAdapter (ArrayList<String> resourceDataSet) {
-        todayDataSet = resourceDataSet;
+    public TodayInfoAdapter (CurrentInfo resourceDataSet) {
+        currentDataSet = resourceDataSet;
     }
 
     @NonNull
@@ -33,30 +35,19 @@ public class TodayInfoAdapter extends RecyclerView.Adapter<TodayInfoAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String[] value = context.getResources().getStringArray(R.array.status_value);
-        int statusValue = Integer.parseInt(todayDataSet.get(position));
-        switch (statusValue) {
-            case 0:
-                holder.statusLog.setImageResource(R.drawable.emo_good);
-                break;
-            case 1:
-                holder.statusLog.setImageResource(R.drawable.emo_normal);
-                break;
-            case 2:
-                holder.statusLog.setImageResource(R.drawable.emo_bad);
-                break;
-            case 3:
-                holder.statusLog.setImageResource(R.drawable.emo_worst);
-                break;
-            default:
-                break;
+        String status = currentDataSet.getCurrentLog().get(position);
+        try {
+            holder.timeLog.setText(Util.convertBeforeHours(currentDataSet.getCurrentTime(), position+1));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
-        holder.valueLog.setText(value[statusValue]);
+        holder.valueLog.setText(Util.convertToStatus(holder.itemView.getContext(), status));
+        holder.statusLog.setImageResource(Util.convertToImage(status));
     }
 
     @Override
     public int getItemCount() {
-        return todayDataSet.size();
+        return currentDataSet.getCurrentLog().size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

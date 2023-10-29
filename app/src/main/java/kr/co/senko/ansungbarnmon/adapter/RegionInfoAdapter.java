@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import kr.co.senko.ansungbarnmon.R;
+import kr.co.senko.ansungbarnmon.db.RegionInfo;
+import kr.co.senko.ansungbarnmon.util.Util;
 
 public class RegionInfoAdapter extends RecyclerView.Adapter<RegionInfoAdapter.ViewHolder>{
 
-    private final ArrayList<String[]> regionDataSet;
+    private final ArrayList<RegionInfo> regionDataSet;
 
     private Context context;
 
@@ -28,7 +30,7 @@ public class RegionInfoAdapter extends RecyclerView.Adapter<RegionInfoAdapter.Vi
 
     private final RegionSelectListener regionSelectListener;
 
-    public RegionInfoAdapter(ArrayList<String[]> resourceDataSet, RegionSelectListener listener) {
+    public RegionInfoAdapter(ArrayList<RegionInfo> resourceDataSet, RegionSelectListener listener) {
         regionDataSet = resourceDataSet;
         this.regionSelectListener = listener;
     }
@@ -43,26 +45,10 @@ public class RegionInfoAdapter extends RecyclerView.Adapter<RegionInfoAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.regionName.setText(regionDataSet.get(position)[0]);
-        String[] value = context.getResources().getStringArray(R.array.status_value);
-        int statusValue = Integer.parseInt(regionDataSet.get(position)[1]);
-        switch (statusValue) {
-            case 0:
-                holder.regionStatus.setImageResource(R.drawable.emo_good);
-                break;
-            case 1:
-                holder.regionStatus.setImageResource(R.drawable.emo_normal);
-                break;
-            case 2:
-                holder.regionStatus.setImageResource(R.drawable.emo_bad);
-                break;
-            case 3:
-                holder.regionStatus.setImageResource(R.drawable.emo_worst);
-                break;
-            default:
-                break;
-        }
-        holder.regionValue.setText(value[statusValue]);
+        holder.regionGroup = regionDataSet.get(position).getGroupID();
+        holder.regionName.setText(regionDataSet.get(position).getGroupName());
+        holder.regionStatus.setImageResource(Util.convertToImage(regionDataSet.get(position).getCurrentValue()));
+        holder.regionValue.setText(Util.convertToStatus(holder.itemView.getContext(), regionDataSet.get(position).getCurrentValue()));
         holder.setListener(regionSelectListener);
     }
 
@@ -72,9 +58,9 @@ public class RegionInfoAdapter extends RecyclerView.Adapter<RegionInfoAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        String regionGroup;
         TextView regionName, regionValue;
         ImageView regionStatus;
-
         RegionInfoAdapter.RegionSelectListener regionSelectListener;
 
         public void setListener(RegionInfoAdapter.RegionSelectListener listener) {
@@ -90,8 +76,8 @@ public class RegionInfoAdapter extends RecyclerView.Adapter<RegionInfoAdapter.Vi
             itemView.setOnClickListener(view -> {
                 int pos = getAdapterPosition();
                 if (pos != RecyclerView.NO_POSITION) {
-                    Toast.makeText(itemView.getContext(), pos+"번 선택", Toast.LENGTH_SHORT).show();
-                    regionSelectListener.result("temp");
+//                    Toast.makeText(itemView.getContext(), pos+"번 선택", Toast.LENGTH_SHORT).show();
+                    regionSelectListener.result(regionGroup);
                 }
 
             });
