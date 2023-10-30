@@ -62,7 +62,9 @@ public class Util {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        PHONE_NUMBER = telephonyManager.getLine1Number() == null ? "":telephonyManager.getLine1Number();
+        String fullNum = telephonyManager.getLine1Number() == null ? "":telephonyManager.getLine1Number();
+        PHONE_NUMBER = "010"+fullNum.substring((fullNum.length()-8));
+
         Log.i("<<<<< Phone Number >>>>>", PHONE_NUMBER);
         toMainActivity(context, activity);
     }

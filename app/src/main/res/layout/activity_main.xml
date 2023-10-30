@@ -230,7 +230,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/footer_btn_bg"
                 android:clickable="true"
-                android:text="@string/footer_terms" />
+                android:text="@string/footer_terms"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/tVwFooterPrivacy"

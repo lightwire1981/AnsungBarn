@@ -89,28 +89,24 @@ public class MainActivity extends AppCompatActivity {
         TextView tvwLogin = findViewById(R.id.tVwFooterLogin);
         tvwLogin.setTag("login");
         tvwLogin.setOnClickListener(onClickListener);
-        TextView tvwTerms = findViewById(R.id.tVwFooterTerms);
-        tvwTerms.setTag("terms");
-        tvwTerms.setOnClickListener(onClickListener);
         TextView tvwPrivacy = findViewById(R.id.tVwFooterPrivacy);
         tvwPrivacy.setTag("privacy");
         tvwPrivacy.setOnClickListener(onClickListener);
     }
 
     private final View.OnClickListener onClickListener = view -> {
+        Intent i = new Intent(MainActivity.this, WebActivity.class);
         switch (view.getTag().toString()) {
             case "login":
-                startActivity(new Intent(MainActivity.this, WebActivity.class));
-                break;
-            case "terms":
-                Toast.makeText(getBaseContext(), R.string.msg_terms, Toast.LENGTH_SHORT).show();
+                i.putExtra("url", "login");
                 break;
             case "privacy":
-                Toast.makeText(getBaseContext(), R.string.msg_privacy, Toast.LENGTH_SHORT).show();
+                i.putExtra("url", "privacy");
                 break;
             default:
                 break;
         }
+        startActivity(i);
     };
 
     /**
@@ -172,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
      * 농장주 로그인 활성화
      */
     private void checkLoginActivate() {
-        boolean isActivate = false;
+        Toast.makeText(getBaseContext(), "폰 번호 : "+Util.PHONE_NUMBER, Toast.LENGTH_SHORT).show();
         if (Util.PHONE_NUMBER.isEmpty()) {
             TextView tvwCity = findViewById(R.id.tVwFooterCity);
             Space spBlank = findViewById(R.id.spFooterBlank);
@@ -199,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.getString("msg").equals("Y")) {
                     String userID = new JSONObject(response.getString("result")).getString("dt_op_user_id");
                     Log.i("############# User ID : ", userID);
+                    PreferenceSetting.SavePreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USER_INFO, userID);
                     TextView tvwLogin = findViewById(R.id.tVwFooterLogin);
                     tvwLogin.setVisibility(View.VISIBLE);
                 } else {
@@ -225,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         };
-//        new DBRequest(getBaseContext(), new Handler(Looper.getMainLooper())).executeAsync(DBRequest.REQUEST_TYPE.LOGIN_AUTH, Util.PHONE_NUMBER, onCompleteListener);
+//        new DBRequest(getBaseContext(), new Handler(Looper.getMainLooper())).executeAsync(DBRequest.REQUEST_TYPE.LOGIN_AUTH, "01053793629", onCompleteListener);
         new DBRequest(getBaseContext(), new Handler(Looper.getMainLooper())).executeAsync(DBRequest.REQUEST_TYPE.LOGIN_AUTH, Util.PHONE_NUMBER, onCompleteListener);
     }
 
