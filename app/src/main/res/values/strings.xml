@@ -12,6 +12,10 @@
     <string name="login_auth">https://livestock.kr/be/appAuthUser.do?user_phone=</string>
     <string name="group_query">\?sys_op_group_id=</string>
 
+    <string name="msg_data_update">정보가 업데이트 되었습니다</string>
+    <string name="msg_terms">이용 약관 표시 준비 중</string>
+    <string name="msg_privacy">개인정보처리방침 표시 준비 중</string>
+
 
     <string name="sample_current_time">오전 10시</string>
     <string name="sample_current_value">좋음</string>

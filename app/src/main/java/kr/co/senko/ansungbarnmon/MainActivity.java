@@ -1,6 +1,7 @@
 package kr.co.senko.ansungbarnmon;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -83,7 +85,33 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager lmgr = new LinearLayoutManager(this);
         lmgr.setOrientation(RecyclerView.VERTICAL);
         rcyVwRegion.setLayoutManager(lmgr);
+
+        TextView tvwLogin = findViewById(R.id.tVwFooterLogin);
+        tvwLogin.setTag("login");
+        tvwLogin.setOnClickListener(onClickListener);
+        TextView tvwTerms = findViewById(R.id.tVwFooterTerms);
+        tvwTerms.setTag("terms");
+        tvwTerms.setOnClickListener(onClickListener);
+        TextView tvwPrivacy = findViewById(R.id.tVwFooterPrivacy);
+        tvwPrivacy.setTag("privacy");
+        tvwPrivacy.setOnClickListener(onClickListener);
     }
+
+    private final View.OnClickListener onClickListener = view -> {
+        switch (view.getTag().toString()) {
+            case "login":
+                startActivity(new Intent(MainActivity.this, WebActivity.class));
+                break;
+            case "terms":
+                Toast.makeText(getBaseContext(), R.string.msg_terms, Toast.LENGTH_SHORT).show();
+                break;
+            case "privacy":
+                Toast.makeText(getBaseContext(), R.string.msg_privacy, Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+    };
 
     /**
      * 현재 까지 오늘자 정보 표시
@@ -145,7 +173,25 @@ public class MainActivity extends AppCompatActivity {
      */
     private void checkLoginActivate() {
         boolean isActivate = false;
-//        if (Util.PHONE_NUMBER.isEmpty()) return;
+        if (Util.PHONE_NUMBER.isEmpty()) {
+            TextView tvwCity = findViewById(R.id.tVwFooterCity);
+            Space spBlank = findViewById(R.id.spFooterBlank);
+            TextView tvwTerms = findViewById(R.id.tVwFooterTerms);
+            TextView tvwPrivacy = findViewById(R.id.tVwFooterPrivacy);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)tvwCity.getLayoutParams();
+            params.weight = 2;
+            tvwCity.setLayoutParams(params);
+            params = (LinearLayout.LayoutParams)tvwTerms.getLayoutParams();
+            params.weight = 2;
+            tvwTerms.setLayoutParams(params);
+            params = (LinearLayout.LayoutParams)tvwPrivacy.getLayoutParams();
+            params.weight = 2;
+            tvwPrivacy.setLayoutParams(params);
+            params = (LinearLayout.LayoutParams)spBlank.getLayoutParams();
+            params.weight = 4;
+            spBlank.setLayoutParams(params);
+            return;
+        }
 
         DBRequest.OnCompleteListener onCompleteListener = result -> {
             try {
@@ -179,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         };
+//        new DBRequest(getBaseContext(), new Handler(Looper.getMainLooper())).executeAsync(DBRequest.REQUEST_TYPE.LOGIN_AUTH, Util.PHONE_NUMBER, onCompleteListener);
         new DBRequest(getBaseContext(), new Handler(Looper.getMainLooper())).executeAsync(DBRequest.REQUEST_TYPE.LOGIN_AUTH, Util.PHONE_NUMBER, onCompleteListener);
     }
 
@@ -218,18 +265,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private final Timer upDateTimer = new Timer();
+    private Timer upDateTimer = new Timer();
 
     @Override
     protected void onResume() {
         super.onResume();
         Util.setFullScreen(this);
+        upDateTimer = new Timer();
         TimerTask upDateTask = new TimerTask() {
             @Override
             public void run() {
                 Log.i("<<<<<<<<< Data Updated", "");
                 getCurrentData();
                 getWeeklyData();
+                runOnUiThread(() -> Toast.makeText(getApplicationContext(), R.string.msg_data_update, Toast.LENGTH_SHORT).show());
             }
         };
         upDateTimer.schedule(upDateTask, 0, 10000);
