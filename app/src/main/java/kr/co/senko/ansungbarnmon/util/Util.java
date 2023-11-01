@@ -107,7 +107,7 @@ public class Util {
     public static String convertToDate(String timestamp) {
         try {
             @SuppressLint("SimpleDateFormat") Date origin = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(timestamp);
-            SimpleDateFormat myFormat = new SimpleDateFormat("M월 d일(E) a h:mm", Locale.KOREAN);
+            SimpleDateFormat myFormat = new SimpleDateFormat("MM. dd(E) a h:mm", Locale.KOREAN);
             assert origin != null;
             return myFormat.format(origin);
         } catch (ParseException e) {

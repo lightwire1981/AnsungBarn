@@ -20,6 +20,8 @@
         android:id="@+id/iVwDailyStatusLog"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:contentDescription="@string/desc_daily_status"
         app:srcCompat="@drawable/emo_good" />
 

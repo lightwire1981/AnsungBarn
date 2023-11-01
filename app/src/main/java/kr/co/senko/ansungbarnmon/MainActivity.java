@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
             tvwPrivacy.setLayoutParams(params);
             params = (LinearLayout.LayoutParams)spBlank.getLayoutParams();
             params.weight = 4;
+            params.setMarginEnd(20);
             spBlank.setLayoutParams(params);
             return;
         }
@@ -214,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
                     tvwPrivacy.setLayoutParams(params);
                     params = (LinearLayout.LayoutParams)spBlank.getLayoutParams();
                     params.weight = 4;
+                    params.setMarginEnd(20);
                     spBlank.setLayoutParams(params);
                 }
 
@@ -278,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> Toast.makeText(getApplicationContext(), R.string.msg_data_update, Toast.LENGTH_SHORT).show());
             }
         };
-        upDateTimer.schedule(upDateTask, 0, 10000);
+        upDateTimer.schedule(upDateTask, 0, 60000);
     }
 
     @Override

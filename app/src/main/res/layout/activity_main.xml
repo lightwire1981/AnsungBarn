@@ -103,6 +103,8 @@
                     android:id="@+id/tVwCurrentRegionTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="1dp"
                     android:text="@string/sample_current_timestamp"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold" />
@@ -117,7 +119,6 @@
                 android:text="@string/sample_current_value"
                 android:textColor="#FFFFFF"
                 android:textSize="70sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.15"
@@ -143,7 +144,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
-            android:layout_weight="25.5"
+            android:layout_weight="25"
             android:requiresFadingEdge="horizontal">
 
         </androidx.recyclerview.widget.RecyclerView>
@@ -162,7 +163,7 @@
             android:id="@+id/lLyWeek"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="16"
+            android:layout_weight="16.5"
             android:gravity="center"
             android:orientation="vertical"
             android:weightSum="10">
@@ -211,7 +212,7 @@
                 style="@style/FooterStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:text="@string/footer_corp" />
@@ -238,6 +239,8 @@
                 style="@style/FooterStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/footer_btn_bg"
                 android:clickable="true"
