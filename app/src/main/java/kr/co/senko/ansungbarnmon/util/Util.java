@@ -139,7 +139,7 @@ public class Util {
         calendar.setTime(now);
         calendar.add(Calendar.DATE, -interval);
 
-        SimpleDateFormat myFormat = new SimpleDateFormat("M월 d일", Locale.KOREAN);
+        SimpleDateFormat myFormat = new SimpleDateFormat("MM월 dd일", Locale.KOREAN);
         String day = myFormat.format(calendar.getTime());
         myFormat = new SimpleDateFormat("EEEE", Locale.KOREAN);
         String week = myFormat.format(calendar.getTime());
