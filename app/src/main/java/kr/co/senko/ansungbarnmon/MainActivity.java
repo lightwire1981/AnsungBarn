@@ -65,8 +65,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         SetWidget();
-        getCurrentData();
-        getWeeklyData();
+        LoadMainData();
+
+//        getCurrentData();
+//        getWeeklyData();
         checkLoginActivate();
         getRegionData();
     }
@@ -92,6 +94,33 @@ public class MainActivity extends AppCompatActivity {
         TextView tvwPrivacy = findViewById(R.id.tVwFooterPrivacy);
         tvwPrivacy.setTag("privacy");
         tvwPrivacy.setOnClickListener(onClickListener);
+    }
+
+    private void LoadMainData() {
+        String[] mainData = getIntent().getStringArrayExtra("mainData");
+        Log.d("<<<<<<<From Intent", mainData[0]);
+
+        CurrentInfo currentInfo;
+        try {
+            currentInfo = new CurrentInfo(new JSONObject(mainData[0]));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        SelectedInfo = currentInfo;
+        setCurrentView(currentInfo);
+
+        WeekInfo weekInfo;
+        try {
+            weekInfo = new WeekInfo(new JSONArray(mainData[1]));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        WeekInfoAdapter weekInfoAdapter = new WeekInfoAdapter(weekInfo);
+        vpWeeklyInfo.setAdapter(weekInfoAdapter);
+
+        CircleIndicator3 vpWeekInfoIndicator = findViewById(R.id.pagerIndicator);
+        vpWeekInfoIndicator.setViewPager(vpWeeklyInfo);
     }
 
     private final View.OnClickListener onClickListener = view -> {
@@ -120,26 +149,27 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject currentData = dataArray.getJSONObject(0);
                 CurrentInfo currentInfo = new CurrentInfo(currentData);
                 SelectedInfo = currentInfo;
-//                for(String value : currentInfo.getCurrentLog()) {
-//                    Log.i("Log :", value);
-//                }
 
-                ((TextView)findViewById(R.id.tVwCurrentRegionName)).setText(currentInfo.getGroupName());
-                ((TextView)findViewById(R.id.tVwCurrentRegionTime)).setText(Util.convertToDate(currentInfo.getCurrentTime()));
-                ((TextView)findViewById(R.id.tVwCurrentRegionValue)).setText(Util.convertToStatus(getBaseContext(), currentInfo.getCurrentValue()));
-                ((ImageView)findViewById(R.id.iVwCurrentRegionStatus)).setImageResource(Util.convertToImage(currentInfo.getCurrentValue()));
+                setCurrentView(currentInfo);
 
-                ((TextView)findViewById(R.id.tVwDrawerRegionName)).setText(currentInfo.getGroupName());
-                ((ImageView)findViewById(R.id.IVwDrawerRegionStatus)).setImageResource(Util.convertToImage(currentInfo.getCurrentValue()));
-                ((TextView)findViewById(R.id.tVwDrawerRegionValue)).setText(Util.convertToStatus(getBaseContext(), currentInfo.getCurrentValue()));
-
-                TodayInfoAdapter todayInfoAdapter = new TodayInfoAdapter(currentInfo);
-                rcyVwCurrent.setAdapter(todayInfoAdapter);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
         };
         new DBRequest(getBaseContext(), new Handler(Looper.getMainLooper())).executeAsync(DBRequest.REQUEST_TYPE.CURRENT, GROUP_ID, onCompleteListener);
+    }
+    private void setCurrentView(CurrentInfo currentInfo) {
+        ((TextView)findViewById(R.id.tVwCurrentRegionName)).setText(currentInfo.getGroupName());
+        ((TextView)findViewById(R.id.tVwCurrentRegionTime)).setText(Util.convertToDate(currentInfo.getCurrentTime()));
+        ((TextView)findViewById(R.id.tVwCurrentRegionValue)).setText(Util.convertToStatus(getBaseContext(), currentInfo.getCurrentValue()));
+        ((ImageView)findViewById(R.id.iVwCurrentRegionStatus)).setImageResource(Util.convertToImage(currentInfo.getCurrentValue()));
+
+        ((TextView)findViewById(R.id.tVwDrawerRegionName)).setText(currentInfo.getGroupName());
+        ((ImageView)findViewById(R.id.IVwDrawerRegionStatus)).setImageResource(Util.convertToImage(currentInfo.getCurrentValue()));
+        ((TextView)findViewById(R.id.tVwDrawerRegionValue)).setText(Util.convertToStatus(getBaseContext(), currentInfo.getCurrentValue()));
+
+        TodayInfoAdapter todayInfoAdapter = new TodayInfoAdapter(currentInfo);
+        rcyVwCurrent.setAdapter(todayInfoAdapter);
     }
 
     /**
@@ -168,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
      * 농장주 로그인 활성화
      */
     private void checkLoginActivate() {
-        Toast.makeText(getBaseContext(), "폰 번호 : "+Util.PHONE_NUMBER, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getBaseContext(), "폰 번호 : "+Util.PHONE_NUMBER, Toast.LENGTH_SHORT).show();
         if (Util.PHONE_NUMBER.isEmpty()) {
             TextView tvwCity = findViewById(R.id.tVwFooterCity);
             Space spBlank = findViewById(R.id.spFooterBlank);
@@ -280,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> Toast.makeText(getApplicationContext(), R.string.msg_data_update, Toast.LENGTH_SHORT).show());
             }
         };
-        upDateTimer.schedule(upDateTask, 0, 60000);
+        upDateTimer.schedule(upDateTask, 60000, 60000);
     }
 
     @Override

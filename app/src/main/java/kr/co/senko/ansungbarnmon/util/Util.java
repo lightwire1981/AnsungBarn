@@ -29,6 +29,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class Util {
 
     public static String PHONE_NUMBER;
+    public final static String MAIN_DATA = "mainData";
     public static void setFullScreen(Activity base) {
 
         View decorView = base.getWindow().getDecorView();
@@ -41,12 +42,12 @@ public class Util {
                         View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 
-    public static void getPhonePermission(Context context, Activity activity) {
+    public static void getPhonePermission(Context context, Activity activity, String... mainData) {
 
         String[] perms = {Manifest.permission.READ_PHONE_NUMBERS};
 
         if (EasyPermissions.hasPermissions(context, perms)) {
-            getPhoneNumber(context, activity);
+            getPhoneNumber(context, activity, mainData);
         } else {
             Log.i("<<<<Check Permission>>", "퍼미션 없음 권한 요청");
             EasyPermissions.requestPermissions(activity,
@@ -56,7 +57,7 @@ public class Util {
         }
     }
     @SuppressLint("HardwareIds")
-    public static void getPhoneNumber(Context context, Activity activity) {
+    public static void getPhoneNumber(Context context, Activity activity, String... mainData) {
         Log.i("<<<<Check Permission>>", "퍼미션 존재함");
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED) {
@@ -66,11 +67,13 @@ public class Util {
         PHONE_NUMBER = "010"+fullNum.substring((fullNum.length()-8));
 
         Log.i("<<<<< Phone Number >>>>>", PHONE_NUMBER);
-        toMainActivity(context, activity);
+        toMainActivity(context, activity, mainData);
     }
 
-    public static void toMainActivity(Context context, Activity activity) {
+    public static void toMainActivity(Context context, Activity activity, String... mainData) {
         Intent i = new Intent(context, MainActivity.class);
+        i.putExtra(Util.MAIN_DATA, mainData);
+
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             context.startActivity(i);
             activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
