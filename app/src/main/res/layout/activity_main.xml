@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#7FBFFF"
-    android:id="@+id/drawerMain"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -145,7 +144,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
-            android:layout_weight="25"
+            android:layout_weight="24.5"
             android:requiresFadingEdge="horizontal">
 
         </androidx.recyclerview.widget.RecyclerView>
@@ -164,7 +163,7 @@
             android:id="@+id/lLyWeek"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="16.5"
+            android:layout_weight="17"
             android:gravity="center"
             android:orientation="vertical"
             android:weightSum="10">
@@ -173,7 +172,7 @@
                 android:id="@+id/vpWeeklyInfo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="fill_vertical"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_weight="1"
