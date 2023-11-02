@@ -1,13 +1,19 @@
 package kr.co.senko.ansungbarnmon;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
@@ -29,8 +35,34 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        checkGroupID();
-        Util.setFullScreen(this);
+        if (checkNetwork()) {
+            checkGroupID();
+            Util.setFullScreen(this);
+        }
+    }
+
+    private Boolean checkNetwork() {
+        boolean enable = false;
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        Network network = connectivityManager.getActiveNetwork();
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
+
+        if(networkCapabilities == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("인터넷 접속 확인").setMessage("서비스 사용을 위해 모바일 통신 또는 WiFi 연결이 필요합니다");
+            builder.setNeutralButton("확인", (dialogInterface, i) -> finish());
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            return enable;
+        }
+
+        if(networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+            enable = true;
+        }
+
+        return enable;
     }
 
     private void checkGroupID() {
