@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton drawerMenuBtn = findViewById(R.id.ibtnDrawerMenu);
         drawerMenuBtn.setOnClickListener(view -> {
             DrawerLayout drawerLayout = findViewById(R.id.drawerMain);
+//            float mainHeight = drawerLayout.getLayoutParams().height;
             View drawer = findViewById(R.id.drawer);
             drawerLayout.openDrawer(drawer);
         });
