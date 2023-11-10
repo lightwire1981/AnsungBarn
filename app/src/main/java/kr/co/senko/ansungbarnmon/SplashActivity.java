@@ -2,7 +2,6 @@ package kr.co.senko.ansungbarnmon;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -20,12 +19,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import kr.co.senko.ansungbarnmon.db.DBRequest;
 import kr.co.senko.ansungbarnmon.util.PreferenceSetting;
 import kr.co.senko.ansungbarnmon.util.Util;
+import pub.devrel.easypermissions.EasyPermissions;
 
 @SuppressLint("CustomSplashScreen")
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     private String currentData;
     private String weekData;
@@ -108,6 +110,11 @@ public class SplashActivity extends AppCompatActivity {
             try {
                 JSONObject rowData = new JSONObject(result);
                 weekData = rowData.getString("list");
+//                String value = PreferenceSetting.LoadPreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER);
+                if (PreferenceSetting.LoadPreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER).equals("NONE")) {
+                    Util.toMainActivity(this, this, currentData, weekData);
+                    return;
+                }
                 Util.getPhonePermission(this, this, currentData, weekData);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
@@ -120,24 +127,33 @@ public class SplashActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         boolean allowed = true;
-        switch (requestCode) {
-            case 0:
+
+        if (requestCode == 100) {
+            for (int res : grantResults) {
+                allowed = res == PackageManager.PERMISSION_GRANTED;
                 break;
-            case 100:
-                for (int res : grantResults) {
-                    allowed = res == PackageManager.PERMISSION_GRANTED;
-                    break;
-                }
-                break;
-            default:
-                allowed = false;
-                break;
+            }
+        } else {
+            allowed = false;
         }
         if (allowed) {
             Util.getPhoneNumber(this, this, currentData, weekData);
         } else {
+            PreferenceSetting.SavePreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER, "NONE");
             Toast.makeText(getApplicationContext(), getString(R.string.phone_number_denied), Toast.LENGTH_SHORT).show();
             Util.toMainActivity(this, this, currentData, weekData);
         }
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        PreferenceSetting.SavePreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER, "NONE");
+        Toast.makeText(getApplicationContext(), getString(R.string.phone_number_denied), Toast.LENGTH_SHORT).show();
+        Util.toMainActivity(this, this, currentData, weekData);
     }
 }

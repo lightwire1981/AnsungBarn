@@ -10,7 +10,8 @@ public class PreferenceSetting {
     public enum PREFERENCE_KEY {
         REGION_INFO,
         USER_INFO,
-        PHONE_NUMBER
+        PHONE_NUMBER,
+        USE_NUMBER
     }
 
     public static String LoadPreference(Context context, PREFERENCE_KEY category) {
@@ -26,6 +27,9 @@ public class PreferenceSetting {
                 break;
             case PHONE_NUMBER:
                 returnValue = preferences.getString(PREFERENCE_KEY.PHONE_NUMBER.name(), "");
+                break;
+            case USE_NUMBER:
+                returnValue = preferences.getString(PREFERENCE_KEY.USE_NUMBER.name(), "");
                 break;
             default:
                 returnValue = "";

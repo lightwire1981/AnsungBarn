@@ -28,7 +28,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class Util {
 
-    public static String PHONE_NUMBER;
+    public static String PHONE_NUMBER="";
     public final static String MAIN_DATA = "mainData";
     public static void setFullScreen(Activity base) {
 
@@ -50,6 +50,7 @@ public class Util {
             getPhoneNumber(context, activity, mainData);
         } else {
             Log.i("<<<<Check Permission>>", "퍼미션 없음 권한 요청");
+
             EasyPermissions.requestPermissions(activity,
                     "앱 동작을 위해 전화 번호 접근 권한이 필요 합니다. 권한을 승인 하시겠습니까?",
                     100,
