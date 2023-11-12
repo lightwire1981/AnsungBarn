@@ -231,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
                     TextView tvwLogin = findViewById(R.id.tVwFooterLogin);
                     tvwLogin.setVisibility(View.VISIBLE);
                 } else {
+                    PreferenceSetting.SavePreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER, "NONE");
                     TextView tvwCity = findViewById(R.id.tVwFooterCity);
                     Space spBlank = findViewById(R.id.spFooterBlank);
                     TextView tvwTerms = findViewById(R.id.tVwFooterTerms);

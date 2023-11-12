@@ -68,15 +68,15 @@ public class Util {
         PHONE_NUMBER = "010"+fullNum.substring((fullNum.length()-8));
 
         Log.i("<<<<< Phone Number >>>>>", PHONE_NUMBER);
-        toMainActivity(context, activity, mainData);
+        toMainActivity(activity, mainData);
     }
 
-    public static void toMainActivity(Context context, Activity activity, String... mainData) {
-        Intent i = new Intent(context, MainActivity.class);
+    public static void toMainActivity(Activity activity, String... mainData) {
+        Intent i = new Intent(activity, MainActivity.class);
         i.putExtra(Util.MAIN_DATA, mainData);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            context.startActivity(i);
+            activity.startActivity(i);
             activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             activity.finish();
         }, 2000);

@@ -2,6 +2,7 @@ package kr.co.senko.ansungbarnmon;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -105,17 +106,40 @@ public class SplashActivity extends AppCompatActivity implements EasyPermissions
         new DBRequest(getBaseContext(), new Handler(Looper.getMainLooper())).executeAsync(DBRequest.REQUEST_TYPE.CURRENT, group_id, onCompleteListener);
     }
 
+    private void checkUserAgree() {
+        if (PreferenceSetting.LoadPreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER).equals("NONE")||
+        PreferenceSetting.LoadPreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER).equals("YES")) {
+            Util.toMainActivity(this, currentData, weekData);
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.user_agree_title);
+        builder.setMessage(R.string.user_agree_detail);
+        builder.setPositiveButton(R.string.user_agree, (dialogInterface, i) -> {
+            Util.getPhonePermission(getBaseContext(), this, currentData, weekData);
+        });
+        builder.setNegativeButton(R.string.user_disagree, (dialogInterface, i) -> {
+            Toast.makeText(getBaseContext(), R.string.user_disagree_result, Toast.LENGTH_SHORT).show();
+            PreferenceSetting.SavePreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER, "NONE");
+            Util.toMainActivity(this, currentData, weekData);
+        });
+        builder.setCancelable(false);
+        builder.show();
+    }
+
     private void getWeekData(String group_id) {
         DBRequest.OnCompleteListener onCompleteListener = result -> {
+
             try {
                 JSONObject rowData = new JSONObject(result);
                 weekData = rowData.getString("list");
 //                String value = PreferenceSetting.LoadPreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER);
-                if (PreferenceSetting.LoadPreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER).equals("NONE")) {
-                    Util.toMainActivity(this, this, currentData, weekData);
-                    return;
-                }
-                Util.getPhonePermission(this, this, currentData, weekData);
+//                if (PreferenceSetting.LoadPreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER).equals("NONE")) {
+//                    Util.toMainActivity(this, this, currentData, weekData);
+//                    return;
+//                }
+//                Util.getPhonePermission(this, this, currentData, weekData);
+                checkUserAgree();
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -137,11 +161,13 @@ public class SplashActivity extends AppCompatActivity implements EasyPermissions
             allowed = false;
         }
         if (allowed) {
+            PreferenceSetting.SavePreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER, "YES");
+            Toast.makeText(getBaseContext(), R.string.user_agree_result, Toast.LENGTH_SHORT).show();
             Util.getPhoneNumber(this, this, currentData, weekData);
         } else {
+            Toast.makeText(getApplicationContext(), R.string.user_disagree_result, Toast.LENGTH_SHORT).show();
             PreferenceSetting.SavePreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER, "NONE");
-            Toast.makeText(getApplicationContext(), getString(R.string.phone_number_denied), Toast.LENGTH_SHORT).show();
-            Util.toMainActivity(this, this, currentData, weekData);
+            Util.toMainActivity(this, currentData, weekData);
         }
     }
 
@@ -154,6 +180,6 @@ public class SplashActivity extends AppCompatActivity implements EasyPermissions
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         PreferenceSetting.SavePreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.USE_NUMBER, "NONE");
         Toast.makeText(getApplicationContext(), getString(R.string.phone_number_denied), Toast.LENGTH_SHORT).show();
-        Util.toMainActivity(this, this, currentData, weekData);
+        Util.toMainActivity(this, currentData, weekData);
     }
 }
