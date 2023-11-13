@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -76,6 +77,7 @@ public class WebActivity extends AppCompatActivity {
             super.onPageStarted(view, url, favicon);
             if (key.equals("privacy")) return;
             String userID = PreferenceSetting.LoadPreference(view.getContext(), PreferenceSetting.PREFERENCE_KEY.USER_INFO);
+            Log.d("<<<<<< User ID : ", userID);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 view.evaluateJavascript("window.sessionStorage.setItem('"+"key"+"','"+userID+"');", null);
 //                view.evaluateJavascript("window.localStorage.setItem('"+"ID"+"','"+ Util.PHONE_NUMBER+"');", null);

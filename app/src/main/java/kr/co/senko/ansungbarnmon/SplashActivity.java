@@ -139,7 +139,8 @@ public class SplashActivity extends AppCompatActivity implements EasyPermissions
 //                    return;
 //                }
 //                Util.getPhonePermission(this, this, currentData, weekData);
-                checkUserAgree();
+//                checkUserAgree();
+                Util.toMainActivity(this, currentData, weekData);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
