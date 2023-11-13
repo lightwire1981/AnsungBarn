@@ -64,8 +64,12 @@ public class Util {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        String fullNum = telephonyManager.getLine1Number() == null ? "":telephonyManager.getLine1Number();
-        PHONE_NUMBER = "010"+fullNum.substring((fullNum.length()-8));
+        String fullNum = telephonyManager.getLine1Number();
+        if (fullNum == null || fullNum.equals("")) {
+            PHONE_NUMBER = "";
+        } else {
+            PHONE_NUMBER = "010"+fullNum.substring((fullNum.length()-8));
+        }
 
         Log.i("<<<<< Phone Number >>>>>", PHONE_NUMBER);
         toMainActivity(activity, mainData);
