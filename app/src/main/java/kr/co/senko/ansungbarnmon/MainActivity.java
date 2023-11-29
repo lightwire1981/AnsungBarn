@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 if (PreferenceSetting.LoadPreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.PHONE_NUMBER).isEmpty()) {
 //                    Toast.makeText(getBaseContext(), "번호 없음", Toast.LENGTH_SHORT).show();
                     new CustomDialog(this, (response, number) -> {
-                        Util.setFullScreen(this);
+                        Util.setFullScreen(this, Util.ScreenType.NAVI);
                         if (response) {
                             if (number.length() < 11) {
                                 Toast.makeText(getBaseContext(), R.string.error_phone, Toast.LENGTH_SHORT).show();
@@ -388,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Util.setFullScreen(this);
+        Util.setFullScreen(this, Util.ScreenType.NAVI);
         upDateTimer = new Timer();
         TimerTask upDateTask = new TimerTask() {
             @Override

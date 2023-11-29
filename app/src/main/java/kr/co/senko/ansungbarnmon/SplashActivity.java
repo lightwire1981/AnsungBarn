@@ -3,6 +3,7 @@ package kr.co.senko.ansungbarnmon;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -10,6 +11,9 @@ import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,14 +37,19 @@ public class SplashActivity extends AppCompatActivity implements EasyPermissions
     private String currentData;
     private String weekData;
 
+    private ProgressBar progressBar;
+    private TextView tvwProgress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        progressBar = findViewById(R.id.pgbrCircle);
+        tvwProgress = findViewById(R.id.tvwProgress);
+
         if (checkNetwork()) {
             checkGroupID();
-            Util.setFullScreen(this);
+            Util.setFullScreen(this, Util.ScreenType.FULL);
         }
     }
 
@@ -69,6 +78,8 @@ public class SplashActivity extends AppCompatActivity implements EasyPermissions
     }
 
     private void checkGroupID() {
+        progressBar.setVisibility(View.VISIBLE);
+        tvwProgress.setVisibility(View.VISIBLE);
         String GROUP_ID = PreferenceSetting.LoadPreference(getBaseContext(), PreferenceSetting.PREFERENCE_KEY.REGION_INFO);
         if (GROUP_ID.isEmpty()) {
             DBRequest.OnCompleteListener onCompleteListener = result -> {
@@ -140,7 +151,17 @@ public class SplashActivity extends AppCompatActivity implements EasyPermissions
 //                }
 //                Util.getPhonePermission(this, this, currentData, weekData);
 //                checkUserAgree();
-                Util.toMainActivity(this, currentData, weekData);
+//                Util.toMainActivity(this, currentData, weekData);
+                Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                i.putExtra(Util.MAIN_DATA, new String[]{currentData, weekData});
+
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    startActivity(i);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    finish();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    tvwProgress.setVisibility(View.INVISIBLE);
+                }, 2000);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

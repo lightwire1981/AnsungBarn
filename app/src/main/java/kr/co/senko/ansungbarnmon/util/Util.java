@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.telephony.TelephonyManager;
@@ -27,20 +28,53 @@ import kr.co.senko.ansungbarnmon.R;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class Util {
+    public enum ScreenType {
+        FULL,
+        NAVI
+    }
 
     public static String PHONE_NUMBER="";
     public final static String MAIN_DATA = "mainData";
-    public static void setFullScreen(Activity base) {
+    public static void setFullScreen(Activity base, ScreenType type) {
 
         View decorView = base.getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE|
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE|
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|
-                        View.SYSTEM_UI_FLAG_FULLSCREEN);
-
+        switch (type) {
+            case FULL:
+                decorView.setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_IMMERSIVE|
+                                View.SYSTEM_UI_FLAG_LAYOUT_STABLE|
+                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|
+                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|
+                                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|
+                                View.SYSTEM_UI_FLAG_FULLSCREEN);
+                break;
+            case NAVI:
+                decorView.setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_IMMERSIVE|
+                                View.SYSTEM_UI_FLAG_LAYOUT_STABLE|
+                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|
+                                View.SYSTEM_UI_FLAG_FULLSCREEN);
+                break;
+            default:
+                break;
+        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+//            decorView.setSystemUiVisibility(
+//                    View.SYSTEM_UI_FLAG_IMMERSIVE|
+//                            View.SYSTEM_UI_FLAG_LAYOUT_STABLE|
+//                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|
+//                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|
+//                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|
+//                            View.SYSTEM_UI_FLAG_FULLSCREEN);
+//
+//        } else {
+//
+//            decorView.setSystemUiVisibility(
+//                    View.SYSTEM_UI_FLAG_IMMERSIVE|
+//                            View.SYSTEM_UI_FLAG_LAYOUT_STABLE|
+//                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|
+//                            View.SYSTEM_UI_FLAG_FULLSCREEN);
+//        }
     }
 
     public static void getPhonePermission(Context context, Activity activity, String... mainData) {
@@ -65,7 +99,8 @@ public class Util {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        String fullNum = telephonyManager.getLine1Number();
+//        String fullNum = telephonyManager.getLine1Number();
+        String fullNum = "";
         if (fullNum == null || fullNum.equals("")) {
             PHONE_NUMBER = "";
         } else {

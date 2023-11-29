@@ -3,6 +3,7 @@
 <!--    <string name="app_name">안성 축사 현황</string>-->
     <string name="splash_temp">안성시 축산냄새\n 스마트 ICT 모니터링</string>
     <string name="desc_splash">스플래시 이미지</string>
+    <string name="prgb_text">정보를 가져오는 중...</string>
 
     <string name="user_agree_title">사용자 전화번호 사용 동의</string>
     <string name="user_agree_detail">앱에서 사용자 전화번호를 확인하여 "축사 운영 농장주"로 등록된 사용자의 경우 운영 중인 축사의 정보를 확인할 수 있는 웹 뷰를 제공합니다.\n일반 사용자의 경우 전화번호 접근을 거부하실 수 있으며 서비스 사용에는 아무런 지장이 없습니다.</string>
